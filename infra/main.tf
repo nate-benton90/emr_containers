@@ -23,4 +23,8 @@ module "s3" {
   // Pass variables here
 }
 
+module "emr" {
+  source = "./emr"
+  // Pass variables here
+}
 
