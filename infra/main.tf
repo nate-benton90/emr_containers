@@ -12,3 +12,15 @@ provider "aws" {
   region  = "us-east-1"
   profile = "default"
 }
+
+module "vpc" {
+  source = "./vpc"
+  // Pass variables here
+}
+
+module "s3" {
+  source = "./s3"
+  // Pass variables here
+}
+
+
