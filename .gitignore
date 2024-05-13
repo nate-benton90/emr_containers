@@ -1,3 +1,4 @@
 *terraform
-*state
+*state*
 *lock*
+terraform.tfstate.backup
