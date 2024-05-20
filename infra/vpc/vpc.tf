@@ -17,3 +17,13 @@ resource "aws_subnet" "eks_subnet" {
     Name = "eks_subnet_${count.index}"
   }
 }
+
+output "eks_vpc_id" {
+  description = "The ID of the VPC"
+  value       = aws_vpc.eks_vpc.id
+}
+
+output "eks_subnet_ids" {
+  description = "The IDs of the subnets"
+  value       = aws_subnet.eks_subnet[*].id
+}

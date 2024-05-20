@@ -1,3 +1,4 @@
+// Terraform config
 terraform {
   required_providers {
     aws = {
@@ -13,29 +14,27 @@ provider "aws" {
   profile = "default"
 }
 
+// Modules
 module "vpc" {
   source = "./infra/vpc"
-  // Pass variables here
 }
 
 module "s3" {
   source = "./infra/s3"
-  // Pass variables here
 }
 
 module "iam" {
   source = "./iam"
-  // Pass variables here
 }
 
 module "eks" {
   source = "./infra/eks"
   role_arn = module.iam.eks_role
-  // Pass variables here
+  eks_vpc_id = module.vpc.eks_vpc_id
+  eks_subnet_ids = module.vpc.eks_subnet_ids
 }
 
 # module "emr_eks" {
 #   source = "./emr"
-#   // Pass variables here
 # }
 
