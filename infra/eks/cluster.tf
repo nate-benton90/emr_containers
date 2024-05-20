@@ -1,6 +1,12 @@
-resource "aws_eks_cluster" "example" {
-  name     = "minimal-eks-cluster"
-  role_arn = aws_iam_role.eks_cluster_role.arn
+# in infra/eks/variables.tf
+variable "role_arn" {
+  description = "The ARN of the IAM role to use for EKS"
+  type        = string
+}
+
+resource "aws_eks_cluster" "foo-emr-eks-cluster" {
+  name     = "foo-emr-eks-cluster"
+  role_arn = var.role_arn
   vpc_config {
     subnet_ids = aws_subnet.eks_subnet[*].id
   }
