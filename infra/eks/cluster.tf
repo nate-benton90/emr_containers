@@ -1,9 +1,4 @@
 // Variables for cluster creation
-variable "role_arn" {
-  description = "The ARN of the IAM role to use for EKS"
-  type        = string
-}
-
 variable "eks_vpc_id" {
   description = "The ID of the VPC"
   type        = string
@@ -14,6 +9,11 @@ variable "eks_subnet_ids" {
   type        = list(string)
 }
 
+variable "role_arn" {
+  description = "The ARN of the IAM role to use for EKS"
+  type        = string
+}
+
 variable "node_role_arn" {
   description = "The ARN of the IAM role to use for EKS node group"
   type        = string
@@ -22,7 +22,7 @@ variable "node_role_arn" {
 // Cluster provisioning/config
 resource "aws_eks_cluster" "foo-emr-eks-cluster" {
   name     = "foo-emr-eks-cluster"
-  role_arn = var.role_arn
+  role_arn = var.node_role_arn
   vpc_config {
     subnet_ids = var.eks_subnet_ids
   }
@@ -32,8 +32,8 @@ resource "aws_eks_cluster" "foo-emr-eks-cluster" {
 resource "aws_eks_node_group" "emr-eks-node-group-foo" {
   depends_on = [aws_eks_cluster.foo-emr-eks-cluster]
   cluster_name    = aws_eks_cluster.foo-emr-eks-cluster.name
-  node_group_name = "example-node-group"
-  node_role_arn   = var.node_role_arn
+  node_group_name = "emr-eks-node-group"
+  node_role_arn   = var.role_arn
   subnet_ids      = var.eks_subnet_ids
   scaling_config {
     desired_size = 1

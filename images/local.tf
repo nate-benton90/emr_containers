@@ -1,3 +1,11 @@
+provider "aws" {
+  region  = var.region
+}
+
+resource "aws_ecr_repository" "repository" {
+  name = "my-ecr-repo"
+}
+
 resource "null_resource" "push_docker_image" {
   triggers = {
     always_run = timestamp()

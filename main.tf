@@ -31,10 +31,16 @@ module ecr {
   source = "./infra/ecr"
 }
 
+# module "local_run" {
+#   source = "./images"
+#   region = "us-east-1"
+#   ecr_repository = module.ecr.emr_eks_repository
+# }
+
 module "eks" {
   source = "./infra/eks"
-  role_arn = module.iam.eks_role
-  node_role_arn = module.iam.eks_node_role
+  role_arn = module.iam.eks_node_role
+  node_role_arn = module.iam.eks_node_instance_profile
   eks_vpc_id = module.vpc.eks_vpc_id
   eks_subnet_ids = module.vpc.eks_subnet_ids
 }
