@@ -12,7 +12,6 @@ resource "aws_subnet" "eks_subnet" {
   cidr_block        = count.index == 0 ? "10.0.1.0/24" : "10.0.2.0/24"
   availability_zone = element(["us-east-1a", "us-east-1b"], count.index)
   map_public_ip_on_launch = true
-
   tags = {
     Name = "eks_subnet_${count.index}"
   }

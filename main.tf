@@ -27,9 +27,14 @@ module "iam" {
   source = "./iam"
 }
 
+module ecr {
+  source = "./infra/ecr"
+}
+
 module "eks" {
   source = "./infra/eks"
   role_arn = module.iam.eks_role
+  node_role_arn = module.iam.eks_node_role
   eks_vpc_id = module.vpc.eks_vpc_id
   eks_subnet_ids = module.vpc.eks_subnet_ids
 }

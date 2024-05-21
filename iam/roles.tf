@@ -50,3 +50,13 @@ resource "aws_iam_instance_profile" "eks_node_instance_profile" {
   name = "eks_node_instance_profile"
   role = aws_iam_role.eks_node_role.name
 }
+
+output "eks_node_role" {
+  description = "The IAM role for EKS node group"
+  value       = aws_iam_role.eks_node_role.arn
+}
+
+output "eks_node_instance_profile" {
+  description = "The IAM instance profile for EKS node group"
+  value       = aws_iam_instance_profile.eks_node_instance_profile.arn
+}
