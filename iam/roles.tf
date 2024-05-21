@@ -1,3 +1,24 @@
+resource "aws_iam_role" "eks_cluster_role" {
+  name = "eks_cluster_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "eks.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
+  role       = aws_iam_role.eks_cluster_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+}
+
 // Node group IAM config
 resource "aws_iam_role" "eks_node_role" {
   name = "eks_node_role"
@@ -33,6 +54,11 @@ resource "aws_iam_role_policy_attachment" "eks_node_role_policy_registry" {
 resource "aws_iam_instance_profile" "eks_node_instance_profile" {
   name = "eks_node_instance_profile"
   role = aws_iam_role.eks_node_role.name
+}
+
+output "eks_cluster_role" {
+  description = "The IAM role for EKS cluster"
+  value       = aws_iam_role.eks_cluster_role.arn
 }
 
 output "eks_node_role" {

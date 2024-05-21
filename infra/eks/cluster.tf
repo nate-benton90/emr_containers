@@ -22,7 +22,7 @@ variable "node_role_arn" {
 // Cluster provisioning/config
 resource "aws_eks_cluster" "foo-emr-eks-cluster" {
   name     = "foo-emr-eks-cluster"
-  role_arn = var.node_role_arn
+  role_arn = var.role_arn
   vpc_config {
     subnet_ids = var.eks_subnet_ids
   }
@@ -33,7 +33,7 @@ resource "aws_eks_node_group" "emr-eks-node-group-foo" {
   depends_on = [aws_eks_cluster.foo-emr-eks-cluster]
   cluster_name    = aws_eks_cluster.foo-emr-eks-cluster.name
   node_group_name = "emr-eks-node-group"
-  node_role_arn   = var.role_arn
+  node_role_arn   = var.node_role_arn
   subnet_ids      = var.eks_subnet_ids
   scaling_config {
     desired_size = 1
