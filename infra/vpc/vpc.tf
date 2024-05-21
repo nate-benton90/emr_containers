@@ -14,7 +14,8 @@ resource "aws_subnet" "eks_subnet" {
   map_public_ip_on_launch = true
   tags = {
     Name = "eks_subnet_${count.index}"
-  }
+    "kubernetes.io/cluster/foo-emr-eks-cluster" = "shared"
+    }
 }
 
 output "eks_vpc_id" {
