@@ -1,8 +1,10 @@
+// Resources
 resource "aws_ecr_repository" "emr-eks-repository" {
-  name = "emr-eks-images"
+  name = "emr-eks-spark-image"
 }
 
-output "emr_eks_repository" {
+// Outputs
+output "emr_eks_repository_url" {
   description = "The ECR repository for EMR on EKS"
   value       = aws_ecr_repository.emr-eks-repository.repository_url
 }

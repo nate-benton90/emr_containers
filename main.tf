@@ -31,11 +31,12 @@ module ecr {
   source = "./infra/ecr"
 }
 
-# module "local_run" {
-#   source = "./images"
-#   region = "us-east-1"
-#   ecr_repository = module.ecr.emr_eks_repository
-# }
+module "local_run" {
+  source = "./images"
+  region = "us-east-1"
+  account_id = "640048293282"
+  repository_url = module.ecr.emr_eks_repository_url
+}
 
 module "eks" {
   source = "./infra/eks"

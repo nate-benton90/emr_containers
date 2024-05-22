@@ -1,21 +1,26 @@
-provider "aws" {
-  region  = var.region
+// Variables
+variable "region" {
+  description = "The AWS region to deploy to"
+  default     = "us-west-1"
 }
 
+variable "account_id" {
+  description = "The AWS account ID"
+}
+
+variable "repository_url" {
+  description = "The name of the ECR repository"
+}
+
+// Resources
 resource "aws_ecr_repository" "repository" {
-  name = "my-ecr-repo"
+  name = "foo-emr-eks-spark-image"
 }
 
 resource "null_resource" "push_docker_image" {
-  triggers = {
-    always_run = timestamp()
-  }
-
   provisioner "local-exec" {
     command = <<EOF
-      $(aws ecr get-login --no-include-email --region ${var.region})
-      docker build -t ${aws_ecr_repository.repository.repository_url}:latest .
-      docker push ${aws_ecr_repository.repository.repository_url}:latest
-    EOF
+    powershell.exe -File ./images/login_build_push.ps1
+  EOF
   }
 }
