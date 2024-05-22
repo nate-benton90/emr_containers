@@ -17,7 +17,7 @@
 #   }
 # }
 
-resource "aws_emrcontainers_virtual_cluster" "example" {
+resource "aws_emrcontainers_virtual_cluster" "foo-emr-virtual-cluster" {
   container_provider {
     id   = "asdfasdf12341234"
     type = "EKS"
