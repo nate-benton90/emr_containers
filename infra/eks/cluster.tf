@@ -1,3 +1,4 @@
+// Variables
 variable "eks_vpc_id" {
   description = "The ID of the VPC"
   type        = string
@@ -18,6 +19,8 @@ variable "node_role_arn" {
   type        = string
 }
 
+
+// Resources
 resource "aws_eks_cluster" "foo-emr-eks-cluster" {
   name     = "foo-emr-eks-cluster"
   role_arn = var.role_arn

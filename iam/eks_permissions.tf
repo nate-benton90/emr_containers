@@ -1,3 +1,4 @@
+// Resources 
 resource "aws_iam_role" "eks_cluster_role" {
   name = "eks_cluster_role"
   assume_role_policy = jsonencode({
@@ -56,6 +57,7 @@ resource "aws_iam_instance_profile" "eks_node_instance_profile" {
   role = aws_iam_role.eks_node_role.name
 }
 
+// Outputs
 output "eks_cluster_role" {
   description = "The IAM role for EKS cluster"
   value       = aws_iam_role.eks_cluster_role.arn

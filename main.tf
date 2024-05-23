@@ -46,7 +46,7 @@ module "eks" {
   eks_subnet_ids = module.vpc.eks_subnet_ids
 }
 
-# module "emr_eks" {
-#   source = "./emr"
-# }
+module "emr_virtual_cluster" {
+  source = "./infra/emr"
+}
 

@@ -20,5 +20,5 @@ RUN yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/lates
 RUN yum install -y python3-devel libtiff-devel libjpeg-devel zlib-devel freetype-devel lcms2-devel libwebp-devel tcl-devel tk-devel harfbuzz-devel fribidi-devel libraqm-devel libimagequant-devel libxcb-devel
 RUN python3 -m pip install --no-cache-dir --upgrade s3fs==0.4.2 networkx==2.4 requests-aws4auth==1.1.1 boto3==1.17.97 py4j==0.10.9.6
 
-USER hadoop:hadoop
+USER hadoop:hadoopie
 
