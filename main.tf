@@ -39,6 +39,10 @@ module "local_run" {
   repository_url = module.ecr.emr_eks_repository_url
 }
 
+module "lambda" {
+  source = "./infra/lambda"
+}
+
 module "eks" {
   source = "./infra/eks"
   role_arn = module.iam.eks_cluster_role

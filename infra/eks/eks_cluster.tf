@@ -29,6 +29,7 @@ resource "aws_eks_cluster" "foo-emr-eks-cluster" {
   }
 }
 
+# TODO: move this section of sg, vpc, subnets, etc. into VPC directory
 resource "aws_security_group" "eks_node_group_sg" {
   name_prefix = "eks-node-group-"
   vpc_id      = var.eks_vpc_id
@@ -86,5 +87,11 @@ resource "aws_eks_node_group" "emr-eks-node-group-foo" {
   
   tags = {
     Name = "emr-eks-node-group"
+  }
+}
+
+resource "kubernetes_namespace" "emr" {
+  metadata {
+    name = "emr-namespace"
   }
 }
