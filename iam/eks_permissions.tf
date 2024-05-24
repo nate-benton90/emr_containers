@@ -15,6 +15,7 @@ resource "aws_iam_role" "eks_cluster_role" {
   })
 }
 
+# TODO: check names for roles/policy names before finalizing resource labels to avoid conflicts/confusion
 resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
   role       = aws_iam_role.eks_cluster_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"

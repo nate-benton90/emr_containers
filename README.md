@@ -10,3 +10,5 @@ points, you can find other examples online but most don't provide a start-to-fin
 ## Appendix
 Useful links:
 1] https://cevo.com.au/post/manage-emr-on-eks-with-terraform/
+2] https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/setting-up.html
+3] https://www.fairwinds.com/blog/guide-securely-upgrading-eks-clusters
