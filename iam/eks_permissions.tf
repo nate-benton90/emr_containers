@@ -20,7 +20,6 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
 
-// Node group IAM config
 resource "aws_iam_role" "eks_node_role" {
   name = "eks_node_role"
   assume_role_policy = jsonencode({

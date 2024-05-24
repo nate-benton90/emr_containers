@@ -44,21 +44,6 @@ resource "aws_iam_role_policy_attachment" "emr_policy_attachment" {
   policy_arn = aws_iam_policy.emr_policy.arn
 }
 
-# Create the EMR virtual cluster
-resource "aws_emrcontainers_virtual_cluster" "foo-emr-virtual-cluster" {
-  container_provider {
-    id   = "foo-emr-eks-cluster"
-    type = "EKS"
-    info {
-      eks_info {
-        namespace = "emr-containers"
-      }
-    }
-  }
-  name = "emr-eks-fun-time"
-  execution_role_arn = aws_iam_role.emr_role.arn  # Associate the IAM role with the EMR virtual cluster
-}
-
 // Output
 output "emr_role" {
   description = "The IAM role for EMR"

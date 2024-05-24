@@ -31,6 +31,7 @@ module ecr {
   source = "./infra/ecr"
 }
 
+# TODO: add global variables for multiple instances of hard-coded values below/above
 module "local_run" {
   source = "./images"
   region = "us-east-1"
@@ -48,5 +49,7 @@ module "eks" {
 
 module "emr_virtual_cluster" {
   source = "./infra/emr"
+  emr_role_arn = module.iam.emr_role
+  emr_policy_arn = module.iam.emr_policy
 }
 

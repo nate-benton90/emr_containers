@@ -16,10 +16,6 @@ variable "repository_url" {
 resource "aws_ecr_repository" "repository" {
   name = "foo-emr-eks-spark-image"
    force_delete = true
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "null_resource" "push_docker_image" {
