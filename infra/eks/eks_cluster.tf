@@ -19,7 +19,6 @@ variable "node_role_arn" {
   type        = string
 }
 
-
 // Resources
 resource "aws_eks_cluster" "foo-emr-eks-cluster" {
   name     = "foo-emr-eks-cluster"
@@ -88,6 +87,23 @@ resource "aws_eks_node_group" "emr-eks-node-group-foo" {
   tags = {
     Name = "emr-eks-node-group"
   }
+}
+
+// Data sources
+data "aws_eks_cluster" "example" {
+  name = aws_eks_cluster.foo-emr-eks-cluster.name
+}
+
+data "aws_eks_cluster_auth" "example" {
+  name = aws_eks_cluster.foo-emr-eks-cluster.name
+}
+
+// Provider
+# NOTE: how to move this over to the main.tf file?
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.example.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.example.token
 }
 
 resource "kubernetes_namespace" "emr" {

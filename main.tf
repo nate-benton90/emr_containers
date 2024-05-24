@@ -41,6 +41,7 @@ module "local_run" {
 
 module "lambda" {
   source = "./infra/lambda"
+  lambda_execution_role_name = module.iam.start_job_lambda_role
 }
 
 module "eks" {
