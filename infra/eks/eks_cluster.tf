@@ -108,6 +108,6 @@ provider "kubernetes" {
 
 resource "kubernetes_namespace" "emr" {
   metadata {
-    name = "emr-namespace"
+    name = "emr-on-eks"
   }
 }

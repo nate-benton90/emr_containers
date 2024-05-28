@@ -19,7 +19,7 @@ REGION_NAME = os.getenv('---')
 PORT = os.getenv('---')
 
 # NOTE: check/log env vars
-log.info("***values of 1] ?={0} 2] ?={1} 3] ?={2}".format(???, ???, ???))
+# log.info("***values of 1] ?={0} 2] ?={1} 3] ?={2}".format(???, ???, ???))
 
 # ---------------------------------------------------------------------------------------------
 
@@ -28,20 +28,21 @@ def default_event_pyspark_driver_config() -> dict:
     *
     """
     return {
-            "jobDriver": {
+            "jobDriver": 
+                {
                     "sparkSubmitJobDriver": {
-                        "entryPoint": ???,
-                        "entryPointArguments": None,
-                        "sparkSubmitParameters": """"--conf spark.sql.sources.partitionOverwriteMode=dynamic  \
-                                                  --conf spark.executor.instances=1 \
-                                                  --conf spark.executor.memory=3G
-                                                  --conf spark.driver.memory=3G \
-                                                  --conf spark.executor.cores=1 \
-                                                  --conf spark.authenticate=false \
-                                                  --conf spark.shuffle.service.enabled=false \
-                                                  --conf spark.network.crypto.enabled=false \
-                                                  --conf spark.authenticate.enableSaslEncryption=false"""
-                    }
+                    "entryPoint": "???",
+                    "entryPointArguments": None,
+                    "sparkSubmitParameters": """"--conf spark.sql.sources.partitionOverwriteMode=dynamic  \
+                                                --conf spark.executor.instances=1 \
+                                                --conf spark.executor.memory=3G
+                                                --conf spark.driver.memory=3G \
+                                                --conf spark.executor.cores=1 \
+                                                --conf spark.authenticate=false \
+                                                --conf spark.shuffle.service.enabled=false \
+                                                --conf spark.network.crypto.enabled=false \
+                                                --conf spark.authenticate.enableSaslEncryption=false"""
+                                            }
                 }
             }
 
