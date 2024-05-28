@@ -1,8 +1,12 @@
-# NOTE: see here for base images: https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/docker-custom-images-tag.html
-# TODO: change account number and region into variables
-FROM 755674844232.dkr.ecr.us-east-1.amazonaws.com/spark/emr-7.0.0-2024321
+# Replace these variables with actual values or use build arguments
+ARG ACCOUNT_ID=755674844232
+ARG REGION=us-east-1
+ARG REPO_NAME=spark
+ARG IMAGE_TAG=emr-7.0.0:latest
+
+FROM public.ecr.aws/emr-on-eks/spark/${IMAGE_TAG}
 LABEL maintainer="foo_nobody"
-LABEL owner_email="nbenton90@gmail.com"
+LABEL owner_email="nbenton90@gmail.com" 
 ENV SPARK_VERSION=3.2
 USER root
 
@@ -21,4 +25,3 @@ RUN yum install -y python3-devel libtiff-devel libjpeg-devel zlib-devel freetype
 RUN python3 -m pip install --no-cache-dir --upgrade s3fs==0.4.2 networkx==2.4 requests-aws4auth==1.1.1 boto3==1.17.97 py4j==0.10.9.6
 
 USER hadoop:hadoopie
-
