@@ -1,6 +1,6 @@
 # NOTE: see here for base images: https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/docker-custom-images-tag.html
 # TODO: change account number and region into variables
-FROM 755674844232.dkr.ecr.us-east-1.amazonaws.com/spark/emr-7.1.0:latest
+FROM 755674844232.dkr.ecr.us-east-1.amazonaws.com/spark/emr-7.0.0-2024321
 LABEL maintainer="foo_nobody"
 LABEL owner_email="nbenton90@gmail.com"
 ENV SPARK_VERSION=3.2
