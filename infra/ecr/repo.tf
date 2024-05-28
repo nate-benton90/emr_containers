@@ -1,6 +1,6 @@
 // Resources
 resource "aws_ecr_repository" "emr-eks-repository" {
-  name = "emr-eks-spark-image"
+  name = "foo-emr-eks-spark-image"
 }
 
 // Outputs

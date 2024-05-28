@@ -19,7 +19,6 @@ resource "aws_iam_role" "emr_role" {
 EOF
 }
 
-# Create the IAM policy
 resource "aws_iam_policy" "emr_policy" {
   name        = "emr_policy"
   description = "Policy for EMR Containers"
@@ -41,6 +40,18 @@ EOF
 resource "aws_iam_role_policy_attachment" "emr_policy_attachment" {
   role       = aws_iam_role.emr_role.name
   policy_arn = aws_iam_policy.emr_policy.arn
+}
+
+# TODO: change resource below with variables
+resource "null_resource" "emr_eks_id_mapping" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+  provisioner "local-exec" {
+    command = <<EOF
+    powershell.exe -File ./iam/eksctl_id_mapping.ps1
+  EOF
+  }
 }
 
 // Output
