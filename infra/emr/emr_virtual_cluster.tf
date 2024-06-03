@@ -9,17 +9,22 @@ variable emr_policy_arn {
   type        = string
 }
 
+variable eks_cluster_name {
+  description = "The name of the EKS cluster used to run EMR Container jobs"
+  type        = string
+}
+
 // Resources
 # TODO: replace id value with variables usage for EKS cluster
-# Create the EMR virtual cluster
 resource "aws_emrcontainers_virtual_cluster" "foo-emr-virtual-cluster" {
   name = "emr-eks-fun-time"
+  depends_on = [aws_eks_cluster.foo-emr-eks-cluster]
   container_provider {
-    id   = "foo-emr-eks-cluster"
+    id   = module.eks.eks_cluster_name
     type = "EKS"
     info {
       eks_info {
-        namespace = "default"
+        namespace = "emr-on-eks"
       }
     }
   }

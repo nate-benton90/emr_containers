@@ -111,3 +111,8 @@ resource "kubernetes_namespace" "emr" {
     name = "emr-on-eks"
   }
 }
+
+// Output
+output "eks_cluster_name" {
+  value = aws_eks_cluster.foo-emr-eks-cluster.name
+}

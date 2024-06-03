@@ -1,3 +1,9 @@
+// Variables
+variable eks_cluster_name {
+  description = "The name of the EKS cluster used to run EMR Container jobs"
+  type        = string
+}
+
 // Resource
 resource "aws_iam_role" "emr_role" {
   name = "emr_role"
@@ -44,6 +50,7 @@ resource "aws_iam_role_policy_attachment" "emr_policy_attachment" {
 
 # TODO: change resource below with variables
 resource "null_resource" "emr_eks_id_mapping" {
+  depends_on = [aws_eks_cluster.foo-emr-eks-cluster]
   triggers = {
     always_run = "${timestamp()}"
   }

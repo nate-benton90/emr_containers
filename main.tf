@@ -1,4 +1,4 @@
-// Terraform config
+// Terraform & provider configuration
 terraform {
   required_providers {
     aws = {
@@ -25,6 +25,7 @@ module "s3" {
 
 module "iam" {
   source = "./iam"
+  eks_cluster_name = module.eks.eks_cluster_name
 }
 
 module ecr {
@@ -32,7 +33,7 @@ module ecr {
 }
 
 # TODO: add global variables for multiple instances of hard-coded values below/above
-module "local_run" {
+module "image_mgmt" {
   source = "./images"
   region = "us-east-1"
   account_id = "640048293282"
@@ -56,5 +57,6 @@ module "emr_virtual_cluster" {
   source = "./infra/emr"
   emr_role_arn = module.iam.emr_role
   emr_policy_arn = module.iam.emr_policy
+  eks_cluster_name = module.eks.eks_cluster_name
 }
 

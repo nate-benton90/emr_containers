@@ -14,9 +14,9 @@ log_handler.setFormatter(logging.Formatter(fmt='%(asctime)s  %(levelname)s  %(me
 log.addHandler(log_handler)
 log.setLevel(logging.INFO)
 
-ENDPOINT = os.getenv('---')
-REGION_NAME = os.getenv('---')
-PORT = os.getenv('---')
+input_var_1 = os.getenv('---')
+input_var_2 = os.getenv('---')
+input_var_3 = os.getenv('---')
 
 # NOTE: check/log env vars
 # log.info("***values of 1] ?={0} 2] ?={1} 3] ?={2}".format(???, ???, ???))
