@@ -15,12 +15,11 @@ variable eks_cluster_name {
 }
 
 // Resources
-# TODO: replace id value with variables usage for EKS cluster
 resource "aws_emrcontainers_virtual_cluster" "foo-emr-virtual-cluster" {
   name = "emr-eks-fun-time"
-  depends_on = [aws_eks_cluster.foo-emr-eks-cluster]
+  depends_on = [var.eks_cluster_name]
   container_provider {
-    id   = module.eks.eks_cluster_name
+    id   = var.eks_cluster_name
     type = "EKS"
     info {
       eks_info {
