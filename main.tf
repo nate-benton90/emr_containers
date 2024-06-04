@@ -26,6 +26,7 @@ module "s3" {
 module "iam" {
   source = "./iam"
   eks_cluster_name = module.eks.eks_cluster_name
+  kubernetes_namespace = module.eks.kubernetes_namespace
 }
 
 module ecr {
@@ -57,6 +58,6 @@ module "emr_virtual_cluster" {
   source = "./infra/emr"
   emr_role_arn = module.iam.emr_role
   emr_policy_arn = module.iam.emr_policy
-  eks_cluster_name = module.eks.eks_cluster_name
+  eks_cluster_name = module.eks.eks_cluster_name 
 }
 

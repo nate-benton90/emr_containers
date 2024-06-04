@@ -4,7 +4,12 @@ variable eks_cluster_name {
   type        = string
 }
 
-// Resource
+variable kubernetes_namespace {
+  description = "The namespace of the EKS cluster"
+  type        = string
+}
+
+// Resources
 resource "aws_iam_role" "emr_role" {
   name = "emr_role"
   assume_role_policy = <<EOF
@@ -33,7 +38,7 @@ resource "aws_iam_policy" "emr_policy" {
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": "emr-containers:",
+      "Action": "emr-containers:*",
       "Resource": "*"
     }
   ]
@@ -48,7 +53,7 @@ resource "aws_iam_role_policy_attachment" "emr_policy_attachment" {
 
 # TODO: change resource below with variables
 resource "null_resource" "emr_eks_id_mapping" {
-  depends_on = [var.eks_cluster_name]
+  depends_on = [var.eks_cluster_name, var.kubernetes_namespace]
   triggers = {
     always_run = "${timestamp()}"
   }
@@ -59,7 +64,7 @@ resource "null_resource" "emr_eks_id_mapping" {
   }
 }
 
-// Output
+// Outputs
 output "emr_role" {
   description = "The IAM role for EMR"
   value       = aws_iam_role.emr_role.arn

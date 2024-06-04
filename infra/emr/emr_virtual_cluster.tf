@@ -17,7 +17,7 @@ variable eks_cluster_name {
 // Resources
 resource "aws_emrcontainers_virtual_cluster" "foo-emr-virtual-cluster" {
   name = "emr-eks-fun-time"
-  depends_on = [var.eks_cluster_name]
+  depends_on = [var.eks_cluster_name, var.emr_role_arn, var.emr_policy_arn]
   container_provider {
     id   = var.eks_cluster_name
     type = "EKS"

@@ -1,5 +1,5 @@
 # TODO: again, add variables for entire repo - specifically name, account id, and region
-$repoName = "foo-emr-eks-spark-image"
+$repoName = "foo-doo-emr-eks-spark-image"
 $accountId = "640048293282"
 $region = "us-east-1"
 

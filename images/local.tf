@@ -14,7 +14,7 @@ variable "repository_url" {
 
 // Resources
 resource "aws_ecr_repository" "repository" {
-  name = "foo-emr-eks-spark-image"
+  name = "foo-doo-emr-eks-spark-image"
    force_delete = true
 }
 
@@ -36,7 +36,7 @@ resource "null_resource" "push_docker_image" {
 #   }
 
 #   depends_on = [
-#     aws_ecr_repository.foo-emr-eks-spark-image
+#     aws_ecr_repository.foo-doo-emr-eks-spark-image
 #   ]
 # }
 
@@ -46,7 +46,7 @@ resource "null_resource" "push_docker_image" {
 #   }
 
 #   provisioner "local-exec" {
-#     command = "terraform destroy -target=aws_ecr_repository.foo-emr-eks-spark-image"
+#     command = "terraform destroy -target=aws_ecr_repository.foo-doo-emr-eks-spark-image"
 #   }
 
 #   depends_on = [
