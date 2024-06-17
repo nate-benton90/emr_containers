@@ -59,5 +59,6 @@ module "emr_virtual_cluster" {
   emr_role_arn = module.iam.emr_role
   emr_policy_arn = module.iam.emr_policy
   eks_cluster_name = module.eks.eks_cluster_name 
+  emr_eks_id_mapping = module.iam.emr_eks_id_mapping
 }
 

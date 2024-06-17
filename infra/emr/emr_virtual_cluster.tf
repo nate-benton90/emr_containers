@@ -14,10 +14,15 @@ variable eks_cluster_name {
   type        = string
 }
 
+variable emr_eks_id_mapping {
+  description = "The ID of the EKS cluster to use for EMR Container jobs"
+  type        = string
+}
+
 // Resources
 resource "aws_emrcontainers_virtual_cluster" "foo-emr-virtual-cluster" {
   name = "emr-eks-fun-time"
-  depends_on = [var.eks_cluster_name, var.emr_role_arn, var.emr_policy_arn]
+  depends_on = [var.emr_eks_id_mapping, var.eks_cluster_name]
   container_provider {
     id   = var.eks_cluster_name
     type = "EKS"

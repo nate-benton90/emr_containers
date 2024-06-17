@@ -53,7 +53,10 @@ resource "aws_iam_role_policy_attachment" "emr_policy_attachment" {
 
 # TODO: change resource below with variables
 resource "null_resource" "emr_eks_id_mapping" {
-  depends_on = [var.eks_cluster_name, var.kubernetes_namespace]
+  depends_on = [
+    var.eks_cluster_name,
+    var.kubernetes_namespace,
+  ]
   triggers = {
     always_run = "${timestamp()}"
   }
@@ -73,4 +76,9 @@ output "emr_role" {
 output "emr_policy" {
   description = "The IAM policy for EMR"
   value       = aws_iam_policy.emr_policy.arn
+}
+
+output "emr_eks_id_mapping" {
+  value = null_resource.emr_eks_id_mapping.id
+  description = "The unique identifier of the null_resource"
 }

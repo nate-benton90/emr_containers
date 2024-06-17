@@ -1,9 +1,7 @@
 // Resources
 resource "aws_ecr_repository" "emr-eks-repository" {
   name = "foo-doo-emr-eks-spark-image"
-   lifecycle {
-    ignore_changes = [name]
-  }
+  force_delete = true
 }
 
 // Outputs

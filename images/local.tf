@@ -13,11 +13,6 @@ variable "repository_url" {
 }
 
 // Resources
-resource "aws_ecr_repository" "repository" {
-  name = "foo-doo-emr-eks-spark-image"
-   force_delete = true
-}
-
 resource "null_resource" "push_docker_image" {
   # NOTE: this ensures that the local-exec provisioner runs every time for every apply 
   triggers = {
@@ -30,26 +25,18 @@ resource "null_resource" "push_docker_image" {
   }
 }
 
-# resource "null_resource" "ecr_empty_repo" {
-#   provisioner "local-exec" {
-#     command = "powershell.exe -File delete_images.ps1"
-#   }
+# TODO: replace hard-coded values
+resource "null_resource" "delete_images" {
+  provisioner "local-exec" {
+    command = "aws ecr batch-delete-image --repository-name foo-doo-emr-eks-spark-image --image-ids imageTag=latest --region us-east-1"
+    when    = destroy
+  }
 
-#   depends_on = [
-#     aws_ecr_repository.foo-doo-emr-eks-spark-image
-#   ]
-# }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
-# resource "null_resource" "destroy_ecr" {
-#   triggers = {
-#     always_run = "${timestamp()}"
-#   }
-
-#   provisioner "local-exec" {
-#     command = "terraform destroy -target=aws_ecr_repository.foo-doo-emr-eks-spark-image"
-#   }
-
-#   depends_on = [
-#     null_resource.ecr_empty_repo
-#   ]
-# }
+  depends_on = [
+    var.repository_url
+  ]
+}
