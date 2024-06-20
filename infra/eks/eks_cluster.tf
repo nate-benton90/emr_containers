@@ -55,6 +55,7 @@ resource "aws_security_group" "eks_node_group_sg" {
 # NOTE: Adjust the path to your SSH public key
 resource "aws_key_pair" "eks_key_pair" {
   key_name   = "eks_key_pair"
+  # NOTE: this key part below must exist on your local machine
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
@@ -99,7 +100,7 @@ data "aws_eks_cluster_auth" "example" {
 }
 
 // Provider
-# NOTE: how to move this over to the main.tf file?
+# TODO: move this over to the main.tf file or elsewhere
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.example.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority[0].data)

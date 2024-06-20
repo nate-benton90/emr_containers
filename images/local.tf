@@ -26,6 +26,7 @@ resource "null_resource" "push_docker_image" {
 }
 
 # TODO: replace hard-coded values
+# TODO: add command to seperate ps1 file
 resource "null_resource" "delete_images" {
   provisioner "local-exec" {
     command = "aws ecr batch-delete-image --repository-name foo-doo-emr-eks-spark-image --image-ids imageTag=latest --region us-east-1"

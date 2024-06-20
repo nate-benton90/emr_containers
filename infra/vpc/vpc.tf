@@ -1,3 +1,4 @@
+// Resources
 resource "aws_vpc" "eks_vpc" {
   cidr_block = "10.0.0.0/16"
   enable_dns_hostnames = true
@@ -42,6 +43,7 @@ resource "aws_route_table_association" "eks_subnet_association" {
   route_table_id = aws_route_table.eks_public_rt.id
 }
 
+// Outputs
 output "eks_vpc_id" {
   description = "The ID of the VPC"
   value       = aws_vpc.eks_vpc.id
