@@ -19,7 +19,7 @@ input_var_2 = os.getenv('---')
 input_var_3 = os.getenv('---')
 
 # NOTE: check/log env vars
-# log.info("***values of 1] ?={0} 2] ?={1} 3] ?={2}".format(???, ???, ???))
+log.info("***values of 1] ?={0} 2] ?={1} 3] ?={2}".format("???", "???", "???"))
 
 # ---------------------------------------------------------------------------------------------
 
@@ -47,6 +47,7 @@ def default_event_pyspark_driver_config() -> dict:
             }
 
 def main(event_param, context_param=None):
+    return "what is this"
 
 # ---------------------------------------------------------------------------------------------
 

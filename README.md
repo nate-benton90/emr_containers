@@ -47,6 +47,18 @@ Server: Docker Desktop 4.28.0 (139021)
 ```
 6] eksctl (I install this with choco on my Windows machine) with version `0.179.0`.
 
+## Disclosures
+* By successfully deploying and using the resources provisioned here, you will incur costs. This is especially true if you're using the AWS resources in a production environment. Please be aware of this and plan accordingly. That being said, the default setup for this project is configured in such a
+way as to make the costs minimal (i.e. the cheapest option for an EKS cluster is about ~75 USD/month). If you're not using the resources, please remember to destroy them to avoid unnecessary costs (i.e. the `terraform destroy` command).
+
+## Tutorial: initial setup
+* Using the `main` branch of this repository, you can follow the steps below to setup the necessary resources for EMR on EKS.
+
+1] Run `terraform init` from the root directory of this project.
+2] Run `terraform apply` and confirm the changes to be made (this will only work if you have the necessary permissions and setup on your local machine for an AWS profile as well as AWS CLI configuration, Docker, and Powershell). All these specifics are listed above at this sections: "Assumptions of local machine setup".
+3] Wait anywhere from 10-30 minutes for the resources to be created (this will vary depending on the region you're using, the resources you're creating, etc.).
+
+
 ## Appendix
 
 Useful links:

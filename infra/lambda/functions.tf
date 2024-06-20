@@ -21,6 +21,6 @@ resource "aws_lambda_function" "start_emr_container_job" {
   filename      = "./infra/lambda/runtimes/lambda_function_payload.zip"
   function_name = "start_job"
   role          = var.lambda_execution_role_name
-  handler       = "lambda_handler.main"
+  handler       = "config_emr_eks_job.main"
   runtime       = "python3.10"
 }
