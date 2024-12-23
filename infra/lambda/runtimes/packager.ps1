@@ -1,3 +1,4 @@
+# TODO: add variable fixes here too
 # Navigate to the directory containing your Python code
 Set-Location -Path .\infra\lambda\runtimes\
 

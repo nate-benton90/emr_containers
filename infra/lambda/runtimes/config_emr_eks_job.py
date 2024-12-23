@@ -14,12 +14,12 @@ log_handler.setFormatter(logging.Formatter(fmt='%(asctime)s  %(levelname)s  %(me
 log.addHandler(log_handler)
 log.setLevel(logging.INFO)
 
-input_var_1 = os.getenv('---')
-input_var_2 = os.getenv('---')
-input_var_3 = os.getenv('---')
+# input_var_1 = os.getenv('---')
+# input_var_2 = os.getenv('---')
+# input_var_3 = os.getenv('---')
 
 # NOTE: check/log env vars
-log.info("***values of 1] ?={0} 2] ?={1} 3] ?={2}".format("???", "???", "???"))
+log.info("***values of 1] ?={0} 2] ?={1} 3] ?={2}".format("??xxxxs?", "???", "???"))
 
 # ---------------------------------------------------------------------------------------------
 
@@ -47,7 +47,7 @@ def default_event_pyspark_driver_config() -> dict:
             }
 
 def main(event_param, context_param=None):
-    return "what is this"
+    return "what is this thing doing???"
 
 # ---------------------------------------------------------------------------------------------
 
