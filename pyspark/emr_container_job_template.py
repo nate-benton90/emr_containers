@@ -8,6 +8,11 @@ import json
 import threading
 import signal
 
+# 
+from pyspark.sql import SparkSession
+from random import random
+# 
+
 from botocore.config import Config
 from time import sleep, time
 from datetime import datetime, timedelta, date
@@ -41,5 +46,24 @@ log.info("---")
 
 # --------------------------------------------------------------------------------------------------------------
 
+def calculate_pi(n_points):
+    def is_inside_circle(x, y):
+        return x**2 + y**2 <= 1
+
+    points = [(random(), random()) for _ in range(n_points)]
+    inside_circle = sum(is_inside_circle(x, y) for x, y in points)
+
+    return 4 * inside_circle / n_points
+
 if __name__ == "__main__":
-    main()
+    spark = SparkSession.builder.appName("CalculatePi").getOrCreate()
+
+    n_points = 1000000  # Adjust as needed
+    partitions = 4  # Adjust as needed
+
+    rdd = spark.sparkContext.parallelize(range(n_points), partitions)
+    pi_estimate = rdd.map(lambda _: calculate_pi(1)).reduce(lambda a, b: a + b) / partitions
+
+    print("Pi is roughly", pi_estimate)
+
+    spark.stop()

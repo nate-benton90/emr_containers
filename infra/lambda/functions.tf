@@ -10,7 +10,7 @@ resource "null_resource" "lambda_package" {
     script_sha = filesha256("./infra/lambda/runtimes/config_emr_eks_job.py")
   }
   provisioner "local-exec" {
-    command = "cd ./infra/lambda/runtimes && zip lambda_function_payload.zip config_emr_eks_job.py"
+    command = "cd ./infra/lambda/runtimes; Compress-Archive -Path ./config_emr_eks_job.py -DestinationPath ./lambda_function_payload.zip"
   }
 }
 

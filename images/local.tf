@@ -20,6 +20,7 @@ resource "null_resource" "push_docker_image" {
   triggers = {
     always_run = "${timestamp()}"
   }
+
   provisioner "local-exec" {
     command = <<EOF
     powershell.exe -File ./images/login_build_push.ps1 -Region "${var.region}" -AccountId "${var.account_id}" -RepositoryUrl "${var.repository_url}" -ImagePath "${var.image_path}"
