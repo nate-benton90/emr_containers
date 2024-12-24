@@ -46,9 +46,32 @@ resource "aws_iam_policy" "emr_policy" {
 EOF
 }
 
+
+resource "aws_iam_policy" "emr_policy_eks" {
+  name        = "eks_policy"
+  description = "Policy for to enable EMR Containers to create namespaces on EKS"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "eks:*",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_iam_role_policy_attachment" "emr_policy_attachment" {
   role       = aws_iam_role.emr_role.name
   policy_arn = aws_iam_policy.emr_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "emr_policy_attachment_2" {
+  role       = aws_iam_role.emr_role.name
+  policy_arn = aws_iam_policy.emr_policy_eks.arn
 }
 
 # TODO: change resource below with variables

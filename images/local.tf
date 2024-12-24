@@ -17,9 +17,9 @@ variable "image_path" {
 
 # Resources
 resource "null_resource" "push_docker_image" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
+  # triggers = {
+  #   always_run = "${timestamp()}"
+  # }
 
   provisioner "local-exec" {
     command = <<EOF

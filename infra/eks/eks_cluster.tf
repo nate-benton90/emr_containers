@@ -71,11 +71,9 @@ resource "aws_eks_node_group" "emr-eks-node-group-foo" {
     max_size     = 1
     min_size     = 1
   }
-
   instance_types = ["t3.micro"]
   ami_type = "AL2_x86_64"
   capacity_type = "SPOT"
-  
   labels = {
     usage = "test-cluster"
   }
