@@ -9,6 +9,13 @@ variable emr_eks_id_mapping {
   type        = string
 }
 
+resource "null_resource" "poll_eks_status" {
+  depends_on = [var.emr_eks_id_mapping, var.eks_cluster_name]
+  provisioner "local-exec" {
+    command = "powershell -NoProfile -File ./infra/emr/check_eks_status.ps1"
+  }
+}
+
 // Resources
 resource "aws_emrcontainers_virtual_cluster" "foo-emr-virtual-cluster" {
   name = "emr-eks-fun-time"

@@ -11,12 +11,11 @@ resource "null_resource" "lambda_package" {
     script_sha = filesha256("./infra/lambda/runtimes/config_emr_eks_job.py")
   }
   provisioner "local-exec" {
-    command = "cd ./infra/lambda/runtimes; Compress-Archive -Path ./config_emr_eks_job.py -DestinationPath ./lambda_function_payload.zip"
+    command = "powershell.exe ./packager.ps1"
   }
 }
 
-
-# TODO: refactor paths 
+# TODO: refactor paths and change location of data usage to another section
 data "archive_file" "zip_the_python_code" {
   type        = "zip"
   source_dir  = "./infra/lambda/runtimes/config_emr_eks_job.py"
