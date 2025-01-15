@@ -123,3 +123,7 @@ output "eks_cluster_arn" {
 output kubernetes_namespace {
   value = kubernetes_namespace.emr.metadata.0.name
 }
+
+output node_group_name {
+  value = aws_eks_node_group.emr-eks-node-group-foo.node_group_name
+}

@@ -58,4 +58,5 @@ module "emr_virtual_cluster" {
   source            = "./infra/emr"
   eks_cluster_name  = module.eks.eks_cluster_name
   emr_eks_id_mapping = module.iam.emr_eks_id_mapping
+  node_group_name = module.eks.node_group_name
 }
