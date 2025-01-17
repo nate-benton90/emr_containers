@@ -1,6 +1,7 @@
 import os
 import time
 import json
+import uuid
 import boto3
 import logging
 
@@ -20,6 +21,8 @@ log.info('***logger initialized')
 virtual_cluster_id = os.getenv("EMR_VIRTUAL_CLUSTER_ID")
 log.info("***referencing virtual cluster id {0} via module {1}".format(virtual_cluster_id,
                                                                 os.path.basename(__file__)))
+
+# ---------------------------------------------------------------------------------------------
 
 # TODO: add vars below
 S3_EMR_LOGS_BUCKET = os.getenv('LOGS_BUCKET')
@@ -100,6 +103,8 @@ def default_emr_container_job_configuration_overrides() -> dict:
         }
     }
 
+# ---------------------------------------------------------------------------------------------
+
 # def recursive_dict_key_value_search(key, iterable):
 #     """
 #     recursively search for a key in an iterable that may contain dictionaries and return its value.
@@ -120,6 +125,10 @@ def default_emr_container_job_configuration_overrides() -> dict:
 #     return None
 
 def make_spark_submit_parameters():
+    """
+    *default,test parameters for spark-submit that should be customized according to arguments and awareness of
+    limits/shresholds of eks cluster and pod
+    """
     sparkSubmitParameters = "--conf spark.sql.sources.partitionOverwriteMode=dynamic  --conf spark.executor.instances=1 \
                                 --conf spark.executor.memory=3G --conf spark.driver.memory=3G --conf spark.executor.cores=1 \
                                 --conf spark.authenticate=false --conf spark.shuffle.service.enabled=false --conf spark.network.crypto.enabled=false \
@@ -140,9 +149,9 @@ def start_emr_container_job(event_param, context_param=None):
         raise error
     
     start_job_run_response = emrc_client.start_job_run(
-                name=emr_container_job_name,
+                name="foo-emr-container-job-{0}".format(int(time.time())),
                 virtualClusterId=virtual_cluster_id,
-                clientToken=emr_container_job_uuid,
+                clientToken=str(uuid.uuid4()),
                 executionRoleArn=emr_container_job_iam_role,
                 releaseLabel=emr_container_release_label,
                 jobDriver=emr_container_job_driver,
