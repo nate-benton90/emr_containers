@@ -36,7 +36,6 @@ def default_emr_container_job_configuration_overrides() -> dict:
     """
     *input payload for emr container start job
     """
-    # TODO: remove or provide conditional variable for this: "spark.jars.packages": "com.amazon.deequ:deequ:2.0.1-spark-3.2"
     # TODO: add vars for this: spark.kubernetes.container.image
     return {
         "configurationOverrides": {
@@ -63,7 +62,7 @@ def default_emr_container_job_configuration_overrides() -> dict:
                         "spark.sql.debug.maxToStringFields": "100",
                         "spark.ssl.enabled": "true",
                         "spark.eventLog.enabled": "true",
-                        "spark.kubernetes.container.image": "{0}.dkr.ecr.us-east-1.amazonaws.com/foo-doo-emr-eks-spark-image:latest".format("xxx"),
+                        "spark.kubernetes.container.image": "{0}.dkr.ecr.us-east-1.amazonaws.com/foo-doo-emr-eks-spark-image:latest".format("640048293282"),
                         "spark.jars.packages": "org.json4s:json4s-jackson:3.2.11",
                         "spark.speculation": "false"
                     },
@@ -76,7 +75,7 @@ def default_emr_container_job_configuration_overrides() -> dict:
                         "hive.metastore.schema.verification": "false",
                         "hive.exec.dynamic.partition": "true",
                         "hive.exec.dynamic.partition.mode": "nonstrict",
-                        "spark.hadoop.hive.metastore.glue.catalogid": "{0}".format("xxx"),
+                        "spark.hadoop.hive.metastore.glue.catalogid": "{0}".format("640048293282"),
                         "spark.hadoop.fs.s3.maxRetries": "5"
                     },
                     "configurations": []
@@ -97,7 +96,7 @@ def default_emr_container_job_configuration_overrides() -> dict:
                     "logStreamNamePrefix": "emr-continer-job-runs"
                 },
                 "s3MonitoringConfiguration": {
-                "logUri": "{0}".format("xxx")
+                "logUri": "{0}".format("640048293282")
                 }
             }
         }
@@ -136,7 +135,8 @@ def make_spark_submit_parameters():
     return sparkSubmitParameters
 
 def start_emr_container_job(event_param, context_param=None):
-    event_input['Input']['job_driver']['sparkSubmitJobDriver']['sparkSubmitParameters'] = spark_submit_parameters
+    event_input = dict()
+    event_input['sparkSubmitParameters'] = make_spark_submit_parameters()
 
     emr_container_job_driver = recursive_dict_key_value_search("job_driver", event_input)
     emr_container_job_configuration_overrides = recursive_dict_key_value_search("configurationOverrides", event_input)

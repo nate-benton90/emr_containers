@@ -9,6 +9,8 @@ terraform {
   required_version = ">= 0.14.9"
 }
 
+# NOTE: user must ajust the profile value according to whatever they configured for the AWS CLI on 
+# their local machine
 provider "aws" {
   region  = "us-east-1"
   profile = "default"
@@ -23,8 +25,11 @@ module "s3" {
   source = "./infra/s3"
 }
 
+# TODO: add variables to standardize and mask values for region and especially AWS account ID
 module "iam" {
   source = "./iam"
+  region = "us-east-1"
+  account_id = "640048293282"
   eks_cluster_name = module.eks.eks_cluster_name
   kubernetes_namespace = module.eks.kubernetes_namespace
 }

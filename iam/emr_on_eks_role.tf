@@ -1,3 +1,13 @@
+// Variables
+variable "region" {
+  description = "AWS region"
+}
+
+variable "account_id" {
+  description = "AWS account ID"
+}
+
+// Resources
 resource "aws_iam_role" "emr_on_eks_role" {
   name        = "emr-on-eks-pod-role"
   description = "IAM role for EMR on EKS which is passed via Lambda when starting a job"
@@ -36,14 +46,6 @@ resource "aws_iam_role_policy" "emr_on_eks_pod_policy" {
         Resource = "*"
       },
       {
-        Sid = "AllowRDSConnect"
-        Effect = "Allow"
-        Action = "rds-db:connect"
-        Resource = [
-          "arn:aws:rds-db:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:dbuser:*"
-        ]
-      },
-      {
         Sid = "LakeFormationAllow"
         Effect = "Allow"
         Action = [
@@ -64,7 +66,3 @@ resource "aws_iam_role_policy_attachment" "managed_policy_attachments" {
   role       = aws_iam_role.emr_on_eks_role.name
   policy_arn = each.value
 }
-
-data "aws_region" "current" {}
-
-data "aws_caller_identity" "current" {}
