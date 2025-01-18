@@ -104,24 +104,24 @@ def default_emr_container_job_configuration_overrides() -> dict:
 
 # ---------------------------------------------------------------------------------------------
 
-# def recursive_dict_key_value_search(key, iterable):
-#     """
-#     recursively search for a key in an iterable that may contain dictionaries and return its value.
-#     """
-#     if isinstance(iterable, dict):
-#         if key in iterable:
-#             return iterable[key]
-#         else:
-#             for value in iterable.values():
-#                 result = recursive_dict_key_value_search(key, value)
-#                 if result is not None:
-#                     return result
-#     elif isinstance(iterable, (list, tuple)):
-#         for item in iterable:
-#             result = recursive_dict_key_value_search(key, item)
-#             if result is not None:
-#                 return result
-#     return None
+def recursive_dict_key_value_search(key, iterable):
+    """
+    recursively search for a key in an iterable that may contain dictionaries and return its value.
+    """
+    if isinstance(iterable, dict):
+        if key in iterable:
+            return iterable[key]
+        else:
+            for value in iterable.values():
+                result = recursive_dict_key_value_search(key, value)
+                if result is not None:
+                    return result
+    elif isinstance(iterable, (list, tuple)):
+        for item in iterable:
+            result = recursive_dict_key_value_search(key, item)
+            if result is not None:
+                return result
+    return None
 
 def make_spark_submit_parameters():
     """
@@ -141,6 +141,10 @@ def start_emr_container_job(event_param, context_param=None):
     emr_container_job_driver = recursive_dict_key_value_search("job_driver", event_input)
     emr_container_job_configuration_overrides = recursive_dict_key_value_search("configurationOverrides", event_input)
 
+    print("***emr-container job driver: {0}".format(emr_container_job_driver))
+    print("***emr-container job configuration overrides: {0}".format(emr_container_job_configuration_overrides))
+    print("***event input: {0}".format(event_input))
+
     try:
         emrc_client = boto3.client('emr-containers')
         log.debug("***emr-container client established with this setup: {0}".format(emrc_client))
@@ -149,11 +153,11 @@ def start_emr_container_job(event_param, context_param=None):
         raise error
     
     start_job_run_response = emrc_client.start_job_run(
-                name="foo-emr-container-job-{0}".format(int(time.time())),
+                name="emr-container-job-{0}".format(int(time.time())),
                 virtualClusterId=virtual_cluster_id,
                 clientToken=str(uuid.uuid4()),
-                executionRoleArn=emr_container_job_iam_role,
-                releaseLabel=emr_container_release_label,
+                executionRoleArn="arn:aws:iam::640048293282:role/emr-on-eks-pod-role",
+                releaseLabel="emr-7.2.0-latest",
                 jobDriver=emr_container_job_driver,
                 configurationOverrides=emr_container_job_configuration_overrides
     )

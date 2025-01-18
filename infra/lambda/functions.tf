@@ -13,7 +13,7 @@ data "local_file" "python_files" {
 resource "null_resource" "lambda_package" {
   triggers = {
     always_run = "${timestamp()}"
-    code_hash = filebase64sha256("./infra/lambda/runtimes/") # Hash of the code directory or files
+    code_hash = filebase64sha256("./infra/lambda/runtimes/lambda_function_payload.zip") # Hash of the zip file
   }
   provisioner "local-exec" {
     command = <<EOF
