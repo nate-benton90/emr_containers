@@ -18,7 +18,8 @@ log.setLevel(logging.INFO)
 log.info('***logger initialized')
 
 # NOTE: read env vars and set global vars
-virtual_cluster_id = os.getenv("EMR_VIRTUAL_CLUSTER_ID")
+# virtual_cluster_id = os.getenv("EMR_VIRTUAL_CLUSTER_ID")
+virtual_cluster_id = "l8lxg71502x30f6y3059z0731"
 log.info("***referencing virtual cluster id {0} via module {1}".format(virtual_cluster_id,
                                                                 os.path.basename(__file__)))
 
@@ -38,7 +39,6 @@ def default_emr_container_job_configuration_overrides() -> dict:
     """
     # TODO: add vars for this: spark.kubernetes.container.image
     return {
-        "configurationOverrides": {
             "applicationConfiguration": [
                 {
                     "classification": "spark-env",
@@ -96,32 +96,12 @@ def default_emr_container_job_configuration_overrides() -> dict:
                     "logStreamNamePrefix": "emr-continer-job-runs"
                 },
                 "s3MonitoringConfiguration": {
-                "logUri": "{0}".format("640048293282")
+                "logUri": "{0}".format("s3://emr-containers-foodoo-data/emr-logs/")
                 }
             }
-        }
     }
 
 # ---------------------------------------------------------------------------------------------
-
-def recursive_dict_key_value_search(key, iterable):
-    """
-    recursively search for a key in an iterable that may contain dictionaries and return its value.
-    """
-    if isinstance(iterable, dict):
-        if key in iterable:
-            return iterable[key]
-        else:
-            for value in iterable.values():
-                result = recursive_dict_key_value_search(key, value)
-                if result is not None:
-                    return result
-    elif isinstance(iterable, (list, tuple)):
-        for item in iterable:
-            result = recursive_dict_key_value_search(key, item)
-            if result is not None:
-                return result
-    return None
 
 def make_spark_submit_parameters():
     """
@@ -135,15 +115,18 @@ def make_spark_submit_parameters():
     return sparkSubmitParameters
 
 def start_emr_container_job(event_param, context_param=None):
-    event_input = dict()
-    event_input['sparkSubmitParameters'] = make_spark_submit_parameters()
 
-    emr_container_job_driver = recursive_dict_key_value_search("job_driver", event_input)
-    emr_container_job_configuration_overrides = recursive_dict_key_value_search("configurationOverrides", event_input)
+    # TODO: add vars for this
+    emr_container_job_driver = \
+                                {
+                                    "sparkSubmitJobDriver": {
+                                                "entryPoint": "s3://foo-doo-who-emr-container-scripts/pyspark/emr_container_job_template.py",
+                                                "entryPointArguments": ["key_1", "value_1"],
+                                                "sparkSubmitParameters": make_spark_submit_parameters(),
+                                                }
+                                }
 
     print("***emr-container job driver: {0}".format(emr_container_job_driver))
-    print("***emr-container job configuration overrides: {0}".format(emr_container_job_configuration_overrides))
-    print("***event input: {0}".format(event_input))
 
     try:
         emrc_client = boto3.client('emr-containers')
@@ -152,6 +135,7 @@ def start_emr_container_job(event_param, context_param=None):
         log.error("***emr-container client failed to establish: {0}".format(error))
         raise error
     
+    # TODO: add variable to lambda to replace aws account number
     start_job_run_response = emrc_client.start_job_run(
                 name="emr-container-job-{0}".format(int(time.time())),
                 virtualClusterId=virtual_cluster_id,
@@ -159,7 +143,7 @@ def start_emr_container_job(event_param, context_param=None):
                 executionRoleArn="arn:aws:iam::640048293282:role/emr-on-eks-pod-role",
                 releaseLabel="emr-7.2.0-latest",
                 jobDriver=emr_container_job_driver,
-                configurationOverrides=emr_container_job_configuration_overrides
+                configurationOverrides=default_emr_container_job_configuration_overrides()
     )
 
     return start_job_run_response
@@ -167,7 +151,7 @@ def start_emr_container_job(event_param, context_param=None):
 def main(event_arg, context_arg=None):
 
     # NOTE: before running start_emr_container_job below, combine input args with default pyspark config overrides
-    event_arg = {**event_arg, **default_emr_container_job_configuration_overrides()}
+    all_lambda_input = {**event_arg}
     return start_emr_container_job(event_arg, context_arg)
 
 # --------------------------------------------------------------------------------------------

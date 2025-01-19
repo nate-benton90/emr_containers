@@ -16,8 +16,29 @@ resource "aws_s3_object" "object" {
   source = "pyspark/emr_container_job_template.py"
 }
 
+resource "aws_s3_bucket" "emr_containers_logs" {
+  bucket = "emr-containers-foodoo-data"
+}
+
+resource "aws_s3_bucket_versioning" "emr_containers_logs_versioning" {
+  bucket = aws_s3_bucket.emr_containers_logs.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 // Outputs
 output "s3_bucket_arn" {
   description = "The ARN of the S3 bucket"
   value       = aws_s3_bucket.emr-eks-scripts.arn
+}
+
+output "logs_s3_bucket_arn" {
+  description = "The ARN of the S3 logs bucket"
+  value       = aws_s3_bucket.emr_containers_logs.arn
+}
+
+output "logs_s3_bucket_name" {
+  description = "The name of the S3 logs bucket"
+  value       = aws_s3_bucket.emr_containers_logs.bucket
 }

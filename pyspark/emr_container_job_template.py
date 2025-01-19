@@ -8,10 +8,8 @@ import json
 import threading
 import signal
 
-# 
 from pyspark.sql import SparkSession
 from random import random
-# 
 
 from botocore.config import Config
 from time import sleep, time
