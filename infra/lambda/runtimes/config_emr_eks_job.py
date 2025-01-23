@@ -19,17 +19,17 @@ log.info('***logger initialized')
 
 # NOTE: read env vars and set global vars
 # virtual_cluster_id = os.getenv("EMR_VIRTUAL_CLUSTER_ID")
-virtual_cluster_id = "l8lxg71502x30f6y3059z0731"
+virtual_cluster_id = "2nvpz1rz8dve1qvyoy9rhdydw"
 log.info("***referencing virtual cluster id {0} via module {1}".format(virtual_cluster_id,
                                                                 os.path.basename(__file__)))
 
 # ---------------------------------------------------------------------------------------------
 
 # TODO: add vars below
-S3_EMR_LOGS_BUCKET = os.getenv('LOGS_BUCKET')
-EMR_CONTAINER_LOGS_PATH = "s3://{0}/emr_containers/".format(S3_EMR_LOGS_BUCKET)
-SCRIPTS_BUCKET = os.getenv('S3_SCRIPT_BUCKET')
-ACOE_ACCOUNT_ID = os.getenv('ACOE_ACCOUNT_ID')
+# S3_EMR_LOGS_BUCKET = os.getenv('LOGS_BUCKET')
+# EMR_CONTAINER_LOGS_PATH = "s3://{0}/emr_containers/".format(S3_EMR_LOGS_BUCKET)
+# SCRIPTS_BUCKET = os.getenv('S3_SCRIPT_BUCKET')
+# ACOE_ACCOUNT_ID = os.getenv('ACOE_ACCOUNT_ID')
 
 # --------------------------------------------------------------------------------------------
 
@@ -56,15 +56,7 @@ def default_emr_container_job_configuration_overrides() -> dict:
                 {
                     "classification": "spark-defaults",
                     "properties": {
-                        "spark.sql.execution.arrow.enabled": "true",
-                        "spark.memory.offHeap.enabled": "true",
-                        "spark.memory.offHeap.size": "5g",
-                        "spark.sql.debug.maxToStringFields": "100",
-                        "spark.ssl.enabled": "true",
-                        "spark.eventLog.enabled": "true",
                         "spark.kubernetes.container.image": "{0}.dkr.ecr.us-east-1.amazonaws.com/foo-doo-emr-eks-spark-image:latest".format("640048293282"),
-                        "spark.jars.packages": "org.json4s:json4s-jackson:3.2.11",
-                        "spark.speculation": "false"
                     },
                     "configurations": []
                 },
@@ -108,10 +100,22 @@ def make_spark_submit_parameters():
     *default,test parameters for spark-submit that should be customized according to arguments and awareness of
     limits/shresholds of eks cluster and pod
     """
-    sparkSubmitParameters = "--conf spark.sql.sources.partitionOverwriteMode=dynamic  --conf spark.executor.instances=1 \
-                                --conf spark.executor.memory=3G --conf spark.driver.memory=3G --conf spark.executor.cores=1 \
-                                --conf spark.authenticate=false --conf spark.shuffle.service.enabled=false --conf spark.network.crypto.enabled=false \
-                                --conf spark.authenticate.enableSaslEncryption=false"
+    sparkSubmitParameters = "--conf spark.sql.sources.partitionOverwriteMode=dynamic \
+                              --conf spark.executor.instances=1 \
+                              --conf spark.executor.memory=128M \
+                              --conf spark.driver.memory=128M \
+                              --conf spark.executor.cores=1 \
+                              --conf spark.driver.cores=1 \
+                              --conf spark.kubernetes.executor.request.cores=0.1 \
+                              --conf spark.kubernetes.driver.request.cores=0.1 \
+                              --conf spark.kubernetes.executor.limit.cores=0.2 \
+                              --conf spark.kubernetes.driver.limit.cores=0.2 \
+                              --conf spark.authenticate=false \
+                              --conf spark.shuffle.service.enabled=false \
+                              --conf spark.network.crypto.enabled=false \
+                              --conf spark.authenticate.enableSaslEncryption=false"
+    return sparkSubmitParameters
+
     return sparkSubmitParameters
 
 def start_emr_container_job(event_param, context_param=None):
