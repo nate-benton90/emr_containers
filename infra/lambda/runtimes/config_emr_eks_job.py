@@ -145,7 +145,7 @@ def start_emr_container_job(event_param, context_param=None):
                 virtualClusterId=virtual_cluster_id,
                 clientToken=str(uuid.uuid4()),
                 executionRoleArn="arn:aws:iam::640048293282:role/emr-on-eks-pod-role",
-                releaseLabel="emr-7.2.0-latest",
+                releaseLabel="emr-7.0.0:latest",
                 jobDriver=emr_container_job_driver,
                 configurationOverrides=default_emr_container_job_configuration_overrides()
     )
