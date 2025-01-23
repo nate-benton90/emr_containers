@@ -1,67 +1,78 @@
 # EMR Containers (i.e. EMR on EKS)
 
-* Using AWS resource for EMR on EKS (i.e. *EMR Containers*), I provide grounded, applicable examples (and explanations) for using this specific service.
+Using **AWS EMR on EKS** (also known as *EMR Containers*), this repository provides practical examples and detailed explanations for using this specific service.
 
-![main aws resource image](misc/emr_eks.png)
+![Main AWS Resource Image](misc/emr_eks.png)
 
-Although this service is still somewhat new and not as widely used as the traditional EMR service, it is a powerful tool for those who are already using EKS and want to run Spark jobs on their EKS cluster. At this
-points, you can find other examples online but most don't provide a start-to-finish guide on not only how to use this service but build it from nothing (infastructure and policy included).
+Although this service is relatively new and less commonly used than the traditional EMR service, it is a powerful tool for users already leveraging EKS who want to run Spark jobs on their EKS cluster. While there are other examples available online, most lack a comprehensive start-to-finish guide for setting up and using this service, including building infrastructure and configuring policies from scratch.
 
-## Assumptions of local machine setup
+---
 
-Before trying to do anything related to this project (other than reading this file), you shoud have the following installed on your local machine:
-1] AWS CLI (with valid credentials and a specific profile name in-mind as needed)
-2] Terraform (this project was developed and run entirely on this version: `v0.14.7`).
-3] If you have an issue with #2, try leveraging the `tfenv` tool to manage multiple versions of Terraform.
-4] PowerShell (to run various scripts in this project), the version that was used start-to-finish was this: `5.1.22621.2506`
-5] Docker (this setup will vary depending on your OS and if you're working solo vs. associated with a company that will leverage this technology and thereby require the absurd liscensing component). As for my machine and setup, I'm on Windows 11 and working solo, so my entire Docker configuration is this:
-```
-Client:
- Cloud integration: v1.0.35+desktop.11
- Version:           25.0.3
- API version:       1.44
- Go version:        go1.21.6
- Git commit:        4debf41
- Built:             Tue Feb  6 21:13:02 2024
- OS/Arch:           windows/amd64
- Context:           default
+## Assumptions for Local Machine Setup
 
-Server: Docker Desktop 4.28.0 (139021)
- Engine:
-  Version:          25.0.3
-  API version:      1.44 (minimum version 1.24)
-  Go version:       go1.21.6
-  Git commit:       f417435
-  Built:            Tue Feb  6 21:14:25 2024
-  OS/Arch:          linux/amd64
-  Experimental:     false
- containerd:
-  Version:          1.6.28
-  GitCommit:        ae07eda36dd25f8a1b98dfbf587313b99c0190bb
- runc:
-  Version:          1.1.12
-  GitCommit:        v1.1.12-0-g51d5e94
- docker-init:
-  Version:          0.19.0
-  GitCommit:        de40ad0
-```
-6] eksctl (I install this with choco on my Windows machine) with version `0.179.0`.
+Before proceeding with this project, ensure the following prerequisites are met on your local machine:
+
+1. **AWS CLI**: Installed and configured with valid credentials (I used this version/setup: `aws-cli/2.4.5 Python/3.8.8 Windows/10 exe/AMD64 prompt/off`). Have a specific profile name ready if required (other than so-called `default`).
+2. **Terraform**: Version `v0.14.7` was used. If issues arise with versioning, use [tfenv](https://github.com/tfutils/tfenv) to manage multiple Terraform versions.
+3. **PowerShell**: Version `5.1.22621.2506` was used to run scripts.
+4. **Docker**: Configuration may vary depending on your OS and use case (solo vs. company). Below is the setup used for this project (Windows 11, solo setup):
+    ```plaintext
+    Client:
+     Cloud integration: v1.0.35+desktop.11
+     Version:           25.0.3
+     API version:       1.44
+     Go version:        go1.21.6
+     Git commit:        4debf41
+     Built:             Tue Feb  6 21:13:02 2024
+     OS/Arch:           windows/amd64
+     Context:           default
+
+    Server: Docker Desktop 4.28.0 (139021)
+     Engine:
+      Version:          25.0.3
+      API version:      1.44 (minimum version 1.24)
+      Go version:       go1.21.6
+      Git commit:       f417435
+      Built:            Tue Feb  6 21:14:25 2024
+      OS/Arch:          linux/amd64
+      Experimental:     false
+     containerd:
+      Version:          1.6.28
+      GitCommit:        ae07eda36dd25f8a1b98dfbf587313b99c0190bb
+     runc:
+      Version:          1.1.12
+      GitCommit:        v1.1.12-0-g51d5e94
+     docker-init:
+      Version:          0.19.0
+      GitCommit:        de40ad0
+    ```
+5. **eksctl**: Installed via Chocolatey (`choco install eksctl`), version `0.179.0`.
+
+---
 
 ## Disclosures
-* By successfully deploying and using the resources provisioned here, you will incur costs. This is especially true if you're using the AWS resources in a production environment. Please be aware of this and plan accordingly. That being said, the default setup for this project is configured in such a
-way as to make the costs minimal (i.e. the cheapest option for an EKS cluster is about ~75 USD/month). If you're not using the resources, please remember to destroy them to avoid unnecessary costs (i.e. the `terraform destroy` command).
 
-## Tutorial: initial setup
-* Using the `main` branch of this repository, you can follow the steps below to setup the necessary resources for EMR on EKS.
+- Deploying and using the resources in this project will incur AWS costs, especially in production environments. The default setup is configured to minimize costs (~$75/month for the cheapest EKS cluster). 
+- To avoid unnecessary charges, destroy the resources when not in use (e.g., using the `terraform destroy` command).
 
-1] Run `terraform init` from the root directory of this project.
-2] Run `terraform apply` and confirm the changes to be made (this will only work if you have the necessary permissions and setup on your local machine for an AWS profile as well as AWS CLI configuration, Docker, and Powershell). All these specifics are listed above at this sections: "Assumptions of local machine setup".
-3] Wait anywhere from 10-30 minutes for the resources to be created (this will vary depending on the region you're using, the resources you're creating, etc.).
+---
 
+## Tutorial: Initial Setup
+
+Follow these steps to set up the necessary resources for EMR on EKS:
+
+1. Clone the repository and switch to the `main` branch.
+2. Run `terraform init` from the root directory.
+3. Run `terraform apply` and confirm the changes. Ensure you have:
+    - Proper AWS profile permissions and CLI configuration.
+    - Installed Docker, PowerShell, and eksctl as mentioned in the [Assumptions](#assumptions-for-local-machine-setup).
+4. Wait for the resources to be created (10–30 minutes, depending on your AWS region and resources).
+
+---
 
 ## Appendix
 
-Useful links:
-1] https://cevo.com.au/post/manage-emr-on-eks-with-terraform/
-2] https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/setting-up.html
-3] https://www.fairwinds.com/blog/guide-securely-upgrading-eks-clusters
+### Useful Links
+- [Managing EMR on EKS with Terraform](https://cevo.com.au/post/manage-emr-on-eks-with-terraform/)
+- [AWS EMR on EKS Development Guide](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/setting-up.html)
+- [Guide to Securely Upgrading EKS Clusters](https://www.fairwinds.com/blog/guide-securely-upgrading-eks-clusters)
