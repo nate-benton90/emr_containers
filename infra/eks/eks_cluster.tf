@@ -71,7 +71,8 @@ resource "aws_eks_node_group" "emr-eks-node-group-foo" {
     max_size     = 1
     min_size     = 1
   }
-  instance_types = ["t3.micro"]
+  instance_types = ["t3.medium"]
+  # NOTE: instance and image type need to be able to host the architecture of the image for the emr-eks job (see Dockerfile)
   ami_type = "AL2_x86_64"
   capacity_type = "SPOT"
   labels = {
