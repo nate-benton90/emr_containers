@@ -8,7 +8,7 @@ variable "account_id" {
 }
 
 variable "repository_url" {
-  default = "640048293282.dkr.ecr.us-east-1.amazonaws.com/foo-doo-emr-eks-spark-image"
+  default = "640048293282.dkr.ecr.us-east-1.amazonaws.com/foo-doo-emr-eks-spark-image:latest"
 }
 
 variable "image_path" {

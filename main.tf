@@ -39,12 +39,13 @@ module ecr {
 }
 
 # TODO: add global variables for multiple instances of hard-coded values below/above
-module "image_mgmt" {
-  source = "./images"
-  region = "us-east-1"
-  account_id = "640048293282"
-  repository_url = module.ecr.emr_eks_repository_url
-}
+# NOTE: this section redacted in favor of using AWS EC2 for image management
+# module "image_mgmt" {
+#   source = "./images"
+#   region = "us-east-1"
+#   account_id = "640048293282"
+#   repository_url = module.ecr.emr_eks_repository_url
+# }
 
 module "lambda" {
   source = "./infra/lambda"
