@@ -1,3 +1,4 @@
+// Resources
 resource "aws_iam_role" "ec2_role" {
   name = "ec2-docker-role"
 
@@ -46,4 +47,13 @@ resource "aws_iam_policy" "ecr_access_policy" {
 resource "aws_iam_role_policy_attachment" "attach_policy" {
   role       = aws_iam_role.ec2_role.name
   policy_arn = aws_iam_policy.ecr_access_policy.arn
+}
+
+// Outputs
+output "ec2_role_name" {
+  value = aws_iam_role.ec2_role.name
+}
+
+output "ecr_access_policy_arn" {
+  value = aws_iam_policy.ecr_access_policy.arn
 }

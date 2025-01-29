@@ -47,6 +47,15 @@ module ecr {
 #   repository_url = module.ecr.emr_eks_repository_url
 # }
 
+module ec2_image_builder {
+  source = "./infra/ec2"
+  region = "us-east-1"
+  instance_type = "t3.medium"
+  vpc_id = module.vpc.eks_vpc_id
+  ec2_role = module.iam.ec2_role_name
+  emr_eks_repository_url = module.ecr.emr_eks_repository_url
+}
+
 module "lambda" {
   source = "./infra/lambda"
   lambda_execution_role_name = module.iam.start_job_lambda_role
