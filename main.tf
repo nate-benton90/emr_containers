@@ -54,6 +54,8 @@ module ec2_image_builder {
   vpc_id = module.vpc.eks_vpc_id
   ec2_role = module.iam.ec2_role_name
   emr_eks_repository_url = module.ecr.emr_eks_repository_url
+  eks_security_group_id = module.eks.security_group_id
+  subnet_id = module.vpc.eks_subnet_ids[0]
 }
 
 module "lambda" {

@@ -128,3 +128,11 @@ output kubernetes_namespace {
 output node_group_name {
   value = aws_eks_node_group.emr-eks-node-group-foo.node_group_name
 }
+
+output security_group_id {
+  value = aws_security_group.eks_node_group_sg.id
+}
+
+output subnet_ids {
+  value = aws_eks_node_group.emr-eks-node-group-foo.subnet_ids
+}
