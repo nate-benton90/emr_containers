@@ -52,6 +52,27 @@ resource "aws_iam_policy_attachment" "ssm_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
+resource "aws_iam_role_policy" "ssm_ecr_policy" {
+  name = "EC2SSM_ECR_Policy"
+  role = aws_iam_role.ssm_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 resource "aws_iam_instance_profile" "ssm_instance_profile" {
   name = "EC2SSMInstanceProfile"
   role = aws_iam_role.ssm_role.name
@@ -63,7 +84,7 @@ resource "aws_instance" "docker_builder" {
   subnet_id     = var.subnet_id
 
   iam_instance_profile = aws_iam_instance_profile.ssm_instance_profile.name  # Attach SSM Profile
-  user_data = file("${path.module}/bootstrap.sh")
+  user_data = file("${path.module}/bootstrap_ec2.sh")
   vpc_security_group_ids = [var.eks_security_group_id]
   tags = {
     Name = "docker-builder-instance"

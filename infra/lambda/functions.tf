@@ -1,15 +1,17 @@
 # FUNCTION 1: EMR Container Lambda ------------------------------------------------------------------------------------
-# Variables
+// Variables
 variable "lambda_execution_role_name" {
   description = "The name of the IAM role that the Lambda function will assume"
   type        = string
 }
 
+// Data
 # Calculate a hash of the Python code files to detect changes
 data "local_file" "python_files" {
   filename = "./infra/lambda/runtimes/config_emr_eks_job.py" # Main Python file or zip file
 }
 
+// Resources
 resource "null_resource" "lambda_package" {
   triggers = {
     always_run = "${timestamp()}"
