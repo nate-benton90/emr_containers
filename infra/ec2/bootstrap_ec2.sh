@@ -13,6 +13,9 @@ sudo yum install -y amazon-ssm-agent
 sudo systemctl enable amazon-ssm-agent
 sudo systemctl start amazon-ssm-agent
 
+# Switch to regular ec2-user
+sudo su - ec2-user
+
 # Install Required Dependencies
 echo "Installing dependencies (Docker, AWS CLI, jq)..."
 amazon-linux-extras enable docker
@@ -35,19 +38,17 @@ echo "Docker is running."
 echo "Authenticating with AWS ECR..."
 aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${emr_eks_repository_url}
 
-# Define Docker image variables
-BASE_IMAGE="public.ecr.aws/emr-on-eks/spark:emr-7.0.0-latest"
+# # Define Docker image variables
+# BASE_IMAGE="public.ecr.aws/emr-on-eks/spark:emr-7.0.0-latest"
 CUSTOM_IMAGE="${emr_eks_repository_url}:latest"
 
-# Pull Base Image
-echo "Pulling base image: $BASE_IMAGE..."
-docker pull $BASE_IMAGE
+# # Pull Base Image
+# echo "Pulling base image: $BASE_IMAGE..."
+# docker pull $BASE_IMAGE
 
 # Create Dockerfile for customization
 echo "Creating Dockerfile..."
 cat <<EOF > /home/ec2-user/Dockerfile
-FROM $BASE_IMAGE
-RUN echo "Customizing Spark Image" >> /custom-log.txt
 EOF
 
 # Build Docker Image
